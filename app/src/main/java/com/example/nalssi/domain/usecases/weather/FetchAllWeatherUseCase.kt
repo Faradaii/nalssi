@@ -1,9 +1,9 @@
 package com.example.nalssi.domain.usecases.weather
 
-import com.example.nalssi.domain.repositories.WeatherRepository
+import com.example.nalssi.domain.repositories.IWeatherRepository
 
-class FetchAllWeatherUseCase(private val weatherRepository: WeatherRepository) {
+class FetchAllWeatherUseCase(private val IWeatherRepository: IWeatherRepository) {
     suspend fun execute(){
-        weatherRepository.fetchAllWeather()
+        IWeatherRepository.fetchAllWeather()
     }
 }

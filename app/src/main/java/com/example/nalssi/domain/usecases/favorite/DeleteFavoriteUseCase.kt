@@ -1,10 +1,10 @@
 package com.example.nalssi.domain.usecases.favorite
 
 import com.example.nalssi.domain.entities.WeatherItem
-import com.example.nalssi.domain.repositories.FavoriteRepository
+import com.example.nalssi.domain.repositories.IFavoriteRepository
 
-class DeleteFavoriteUseCase (private val favoriteRepository: FavoriteRepository) {
+class DeleteFavoriteUseCase (private val IFavoriteRepository: IFavoriteRepository) {
     suspend fun execute(weather: WeatherItem) {
-        favoriteRepository.deleteFavorite(weather)
+        IFavoriteRepository.deleteFavorite(weather)
     }
 }
