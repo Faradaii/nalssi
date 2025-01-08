@@ -1,4 +1,4 @@
-package com.example.nalssi.domain.entities
+package com.example.nalssi.domain.entities.weather
 
 data class WeatherLocation (
     var name: String? = null,
