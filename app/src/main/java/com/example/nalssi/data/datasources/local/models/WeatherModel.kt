@@ -7,7 +7,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "weather")
 data class WeatherModel(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    var id: Int = 0,
+
     @ColumnInfo(name = "custom_id")
     val custom_id: String? = null,
 

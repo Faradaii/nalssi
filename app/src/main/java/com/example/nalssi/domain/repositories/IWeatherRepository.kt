@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface IWeatherRepository {
     suspend fun fetchAllWeather(): Flow<DataState<List<WeatherItem>>>
-    suspend fun fetchDetailWeather(id: String)
-    suspend fun searchWeather(query: String)
-    suspend fun getAllFavoriteWeather()
-    suspend fun insertFavoriteWeather(weather: WeatherItem)
-    suspend fun deleteFavoriteWeather(weather: WeatherItem)
+    fun fetchDetailWeather(id: String)
+    fun searchWeather(query: String)
+    fun getAllFavoriteWeather()
+    fun insertFavoriteWeather(weather: WeatherItem)
+    fun deleteFavoriteWeather(weather: WeatherItem)
 }

@@ -1,34 +1,38 @@
 package com.example.nalssi.data.datasources.remote
 
+import android.content.Context
+import android.util.Log
+import com.example.nalssi.core.constant.API_KEY
 import com.example.nalssi.data.datasources.remote.network.ApiService
 import com.example.nalssi.data.datasources.remote.network.ApiResponse
 import com.example.nalssi.data.datasources.remote.response.allWeatherResponse.ListWeatherResponse
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
-class RemoteDataSource (private val apiService: ApiService) {
-    suspend fun fetchAllWeather(): Flow<ApiResponse<ListWeatherResponse>> {
+class RemoteDataSource (private val apiService: ApiService, private val context: Context) {
+    private val apiKey = API_KEY
+    fun fetchAllWeather(): Flow<ApiResponse<ListWeatherResponse>> {
         return flow {
-            emit(ApiResponse.Loading)
+            Log.d("DEBUG", "FETCHING NEW DATA NETWORK")
             try {
-                val jsonFilePath = "src/main/assets/province_data.json"
-                val jsonBody = File(jsonFilePath).readText(Charsets.UTF_8)
+                val jsonBody = context.assets.open("province_data.json").bufferedReader().use { it.readText() }
                 val requestBody = jsonBody.toRequestBody("application/json".toMediaType())
 
-                val response = apiService.getAllWeather(body = requestBody)
+                val response = apiService.getAllWeather(body = requestBody, key = apiKey)
                 if (response.bulk != null) {
                     emit(ApiResponse.Success(response))
-                }
-                else {
+                } else {
                     emit(ApiResponse.Error("Data not found"))
                 }
+            } catch (e: Exception) {
+                throw e
             }
-            catch (e: Exception) {
-                emit(ApiResponse.Error(e.message.toString()))
-            }
+        }.catch { e ->
+            emit(ApiResponse.Error(e.message ?: "Unknown error occurred"))
         }
     }
 }

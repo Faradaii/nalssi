@@ -8,7 +8,7 @@ import org.koin.dsl.module
 
 val RepositoryModule = module {
     single { LocalDataSource(get()) }
-    single { RemoteDataSource(get()) }
+    single { RemoteDataSource(get(), get()) }
 
     single<IWeatherRepository> { WeatherRepository(get(), get()) }
 }

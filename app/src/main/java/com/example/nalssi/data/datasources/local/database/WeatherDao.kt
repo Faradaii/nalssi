@@ -15,7 +15,7 @@ interface WeatherDao {
     fun fetchAllWeather(): Flow<List<WeatherModel>>
 
     @Delete
-    suspend fun deleteAllWeather()
+    suspend fun deleteAllWeather(weather: WeatherModel)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeather(weather: List<WeatherModel>)
@@ -26,6 +26,6 @@ interface WeatherDao {
     @Query("SELECT * FROM weather WHERE custom_id = :customId")
     fun getWeatherByCustomId(customId: String): WeatherModel
 
-    @Query("SELECT 1 FROM weather")
-    fun getLastUpdatedDate(): String
+    @Query("SELECT currentlast_updated FROM weather ORDER BY currentlast_updated DESC LIMIT 1")
+    fun getLastUpdatedDate(): String?
 }

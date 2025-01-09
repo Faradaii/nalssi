@@ -1,5 +1,6 @@
 package com.example.nalssi.data
 
+import android.util.Log
 import com.example.nalssi.core.utils.AppExecutors
 import com.example.nalssi.data.datasources.remote.network.ApiResponse
 import kotlinx.coroutines.flow.Flow
@@ -10,12 +11,12 @@ import kotlinx.coroutines.flow.map
 import java.util.Date
 
 abstract class NetworkBoundResource<ResultType, RequestType> {
-    val result: Flow<DataState<ResultType>> = flow {
-        emit(DataState.Loading)
+    private val result: Flow<DataState<ResultType>> = flow {
         val dbValue = loadFromDb().first()
         val lastUpdatedDate = getLastUpdatedDate()
         if (shouldFetch(dbValue, lastUpdatedDate)) {
             emit(DataState.Loading)
+            Log.d("DEBUG", "FETCHING NEW DATA TO API")
             when (val apiResponse = createCall().first()) {
                 is ApiResponse.Success -> {
                     saveCallResult(apiResponse.data)
@@ -36,7 +37,7 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
 
     open fun onFetchFailed() {}
 
-    abstract fun getLastUpdatedDate(): Date?
+    abstract suspend fun getLastUpdatedDate(): Date?
 
     abstract fun shouldFetch(data: ResultType?, lastUpdatedDate: Date?): Boolean
 

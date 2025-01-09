@@ -1,6 +1,8 @@
 package com.example.nalssi.data.datasources.remote.network
 
-import com.example.nalssi.core.utils.DotEnv
+import android.util.Log
+import com.example.nalssi.core.constant.API_KEY
+import com.example.nalssi.core.constant.BASE_URL
 import java.util.concurrent.TimeUnit
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -9,13 +11,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiConfig {
-    private val baseUrl = DotEnv.get("WEATHER_API_BASEURL")
-    private val apiKey = DotEnv.get("WEATHER_API_KEY")
+    private val baseUrl: String = BASE_URL
+    private val apiKey: String = API_KEY
 
     private fun provideInterceptor(): Interceptor {
         return Interceptor { chain ->
             val request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $apiKey")
+                .addHeader("Authorization", "key $apiKey")
                 .addHeader("Accept", "application/json")
                 .build()
             chain.proceed(request)

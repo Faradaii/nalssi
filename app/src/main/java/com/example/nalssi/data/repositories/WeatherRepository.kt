@@ -1,5 +1,6 @@
 package com.example.nalssi.data.repositories
 
+import android.util.Log
 import com.example.nalssi.core.utils.DateUtil
 import com.example.nalssi.core.utils.WeatherDataMapper
 import com.example.nalssi.data.DataState
@@ -32,12 +33,13 @@ class WeatherRepository(
                 return localDataSource.fetchAllWeather().map { WeatherDataMapper.mapEntitiesToDomain(it) }
             }
 
-            override fun getLastUpdatedDate(): Date? {
+            override suspend fun getLastUpdatedDate(): Date? {
                 val lastUpdatedDate = localDataSource.getLastUpdatedDate()
-                return DateUtil.stringToDate(lastUpdatedDate)
+                return lastUpdatedDate?.let { DateUtil.stringToDate(it) }
             }
 
             override suspend fun createCall(): Flow<ApiResponse<ListWeatherResponse>> {
+                Log.i("DEBUG", "FETCHING NEW DATA")
                 return remoteDataSource.fetchAllWeather()
             }
 
@@ -48,35 +50,34 @@ class WeatherRepository(
 
             override fun shouldFetch(data: List<WeatherItem>?, lastUpdatedDate: Date?): Boolean {
                 return if (data != null) {
-                    lastUpdatedDate.let {
-                        if (it == null) true
-                        else {
-                            val diff = DateUtil.getDiffInDays(it, Date())
-                            diff >= 1
-                        }
-                    }
+                    lastUpdatedDate?.let {
+                        val diff = DateUtil.getDiffInDays(it, Date())
+                        diff >= 1
+                    } ?: true
+                } else {
+                    true
                 }
-                else { true }
             }
         }.asFlow()
 
-    override suspend fun fetchDetailWeather(id: String) {
+    override fun fetchDetailWeather(id: String) {
         //TODO("Not yet implemented")
     }
 
-    override suspend fun searchWeather(query: String) {
+    override fun searchWeather(query: String) {
         //TODO("Not yet implemented")
     }
 
-    override suspend fun getAllFavoriteWeather() {
+    override fun getAllFavoriteWeather() {
         //TODO("Not yet implemented")
     }
 
-    override suspend fun insertFavoriteWeather(weather: WeatherItem) {
+    override fun insertFavoriteWeather(weather: WeatherItem) {
         //TODO("Not yet implemented")
     }
 
-    override suspend fun deleteFavoriteWeather(weather: WeatherItem) {
+    override fun deleteFavoriteWeather(weather: WeatherItem) {
         //TODO("Not yet implemented")
     }
+
 }
