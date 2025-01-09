@@ -36,7 +36,7 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
 
     open fun onFetchFailed() {}
 
-    abstract fun getLastUpdatedDate(): Date
+    abstract fun getLastUpdatedDate(): Date?
 
     abstract fun shouldFetch(data: ResultType?, lastUpdatedDate: Date?): Boolean
 

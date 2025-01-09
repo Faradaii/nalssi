@@ -22,4 +22,10 @@ interface WeatherDao {
 
     @Update
     suspend fun updateWeather(weather: WeatherModel)
+
+    @Query("SELECT * FROM weather WHERE custom_id = :customId")
+    fun getWeatherByCustomId(customId: String): WeatherModel
+
+    @Query("SELECT 1 FROM weather")
+    fun getLastUpdatedDate(): String
 }

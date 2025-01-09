@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource (private val weatherDao: WeatherDao) {
     fun fetchAllWeather(): Flow<List<WeatherModel>> = weatherDao.fetchAllWeather()
+    suspend fun insertWeather(weatherList: List<WeatherModel>) = weatherDao.insertWeather(weatherList)
+    fun getLastUpdatedDate() = weatherDao.getLastUpdatedDate()
 }
