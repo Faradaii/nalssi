@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             NalssiTheme {
                 KoinContext {
-                    HomeScreen()
+                    MainScreen()
                 }
             }
         }
