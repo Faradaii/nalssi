@@ -6,5 +6,4 @@ interface HomeScreenCallback {
     fun onItemClicked(weatherItem: WeatherItem)
     fun onFavoriteClicked()
     fun onProfileClicked()
-    fun onSettingsClicked()
 }

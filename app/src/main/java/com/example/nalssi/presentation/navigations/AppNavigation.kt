@@ -16,7 +16,6 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier) {
         detailNavigation(navController = navController)
         profileNavigation(navController = navController)
         favoriteNavigation(navController = navController)
-        settingNavigation(navController = navController)
     }
 
 }

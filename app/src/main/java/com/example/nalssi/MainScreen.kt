@@ -21,7 +21,7 @@ fun MainScreen(
 
     Scaffold(
         modifier = modifier,
-    ) { innerPadding ->
+    ) { _ ->
         AppNavigation(navController = navController, modifier = modifier)
     }
 
