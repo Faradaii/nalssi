@@ -6,10 +6,9 @@ import com.example.nalssi.domain.entities.weather.WeatherItem
 import kotlinx.coroutines.flow.Flow
 
 interface IWeatherRepository {
-    suspend fun fetchAllWeather(): Flow<DataState<List<WeatherItem>>>
-    fun fetchDetailWeather(id: String)
+    suspend fun fetchAllWeather(forceFetch: Boolean = false): Flow<DataState<List<WeatherItem>>>
+    suspend fun fetchDetailWeather(q: String, forceFetch: Boolean = false): Flow<DataState<WeatherItem>>
+    suspend fun toggleFavoriteWeather(weatherItem: WeatherItem)
     fun searchWeather(query: String)
     fun getAllFavoriteWeather()
-    fun insertFavoriteWeather(weather: WeatherItem)
-    fun deleteFavoriteWeather(weather: WeatherItem)
 }

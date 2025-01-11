@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -58,7 +59,7 @@ fun HomeScreen(
     homeScreenCallback: HomeScreenCallback,
 ) {
     val viewModel: HomeViewModel = koinViewModel()
-    val listWeather = viewModel.listWeather.collectAsState().value
+    val data = viewModel.listWeather.collectAsState().value
 
     val isOpenBottomSheet = remember { mutableStateOf(false) }
 
@@ -66,23 +67,26 @@ fun HomeScreen(
         topBar = { HomeTopBar(onClick = { isOpenBottomSheet.value = true }) },
     ) { innerPadding ->
         Box(
-            modifier = modifier.padding(innerPadding)
+            modifier = modifier.padding(innerPadding).fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
             if (isOpenBottomSheet.value) {
                 MyModalBottomSheet(isOpenState = isOpenBottomSheet, homeScreenCallback = homeScreenCallback)
             }
 
             Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                when (listWeather) {
-                    is DataState.Error -> Text(listWeather.toString())
-                    is DataState.Loading -> Text(listWeather.toString())
+                when (data) {
+                    is DataState.Error -> Text(data.toString())
+                    is DataState.Loading -> Text(data.toString())
                     is DataState.Success, is DataState.Cached -> {
-                        val data = when (listWeather) {
-                            is DataState.Success -> listWeather.data
-                            is DataState.Cached -> listWeather.data
+                        val data = when (data) {
+                            is DataState.Success -> data.data
+                            is DataState.Cached -> data.data
                             else -> emptyList()
                         }
                         LazyVerticalGrid(
@@ -180,46 +184,56 @@ fun MyChip(text: String, modifier: Modifier = Modifier) {
 fun MyModalBottomSheet(isOpenState: MutableState<Boolean>, homeScreenCallback: HomeScreenCallback) {
     ModalBottomSheet(
         onDismissRequest = { isOpenState.value = false },
+        dragHandle = {},
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(bottom = 24.dp, start = 16.dp, end = 16.dp)
+            modifier = Modifier.padding(top = 24.dp ,bottom = 24.dp)
         ) {
-            MyOptionBottomSheet(text = "Profile", contentDescription = "about_page", onClick = { isOpenState.value = false; homeScreenCallback.onProfileClicked() })
-            HorizontalDivider()
-            MyOptionBottomSheet(text = "Favorite", contentDescription = "favorite_page", onClick = { isOpenState.value = false; homeScreenCallback.onFavoriteClicked() })
+            MyOptionBottomSheet(idIcon = R.drawable.ic_person ,text = "Profile", contentDescription = "about_page", onClick = { isOpenState.value = false; homeScreenCallback.onProfileClicked() })
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+            MyOptionBottomSheet(idIcon = R.drawable.ic_menu ,text = "Favorite", contentDescription = "favorite_page", onClick = { isOpenState.value = false; homeScreenCallback.onFavoriteClicked() })
         }
     }
 }
 
 @Composable
-fun MyOptionBottomSheet(text: String, contentDescription: String, onClick: () -> Unit) {
-    Text(
-        text = text,
-        style = AppTypography.titleMedium.copy(textAlign = TextAlign.Center),
+fun MyOptionBottomSheet(idIcon: Int ,text: String, contentDescription: String, onClick: () -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .clickable { onClick() }
-            .padding(vertical = 12.dp)
-            .semantics { this.contentDescription = contentDescription },
-    )
+            .padding(horizontal = 16.dp, vertical = 16.dp)
+    ) {
+        Icon(
+            painter = painterResource(id = idIcon),
+            contentDescription = text,
+        )
+        Text(
+            text = text,
+            style = AppTypography.titleMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics { this.contentDescription = contentDescription },
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeTopBar(onClick: () -> Unit) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
+        navigationIcon = {
+            Image(painter = painterResource(id = R.drawable.nalssi), modifier = Modifier.size(64.dp), contentDescription = "Logo")
+        },
         title = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Image(painter = painterResource(id = R.drawable.nalssi), modifier = Modifier.size(64.dp), contentDescription = "Logo")
-                Text(
-                    text = "Nalssi",
-                    style = AppTypography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                )
-            }
+            Text(
+                text = "Nalssi",
+                style = AppTypography.titleLarge.copy(fontWeight = FontWeight.Bold),
+            )
         },
         actions = {
             Icon(

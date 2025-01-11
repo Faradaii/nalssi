@@ -43,8 +43,11 @@ data class WeatherLocationModel (
     @ColumnInfo(name = "lon")
     var lon: String? = null,
 
+    @ColumnInfo(name = "localtime")
+    var localTime: String? = null,
+
     @ColumnInfo(name = "tz_id")
-    var localTime: String? = null
+    var timezoneId: String? = null
 )
 
 data class WeatherCurrentModel (
@@ -54,11 +57,35 @@ data class WeatherCurrentModel (
     @ColumnInfo(name = "temp_c")
     var temp_c: String? = null,
 
+    @ColumnInfo(name = "temp_f")
+    var temp_f: String? = null,
+
+    @ColumnInfo(name = "wind_mph")
+    var wind_mph: String? = null,
+
+    @ColumnInfo(name = "wind_dir")
+    var wind_dir: String? = null,
+
+    @ColumnInfo(name = "pressure_mb")
+    var pressure_mb: String? = null,
+
+    @ColumnInfo(name = "precip_mm")
+    var precip_mm: String? = null,
+
+    @ColumnInfo(name = "cloud")
+    var cloud: String? = null,
+
+    @ColumnInfo(name = "uv")
+    var uv: String? = null,
+
     @ColumnInfo(name = "condition")
     var condition: WeatherConditionModel? = null,
 
-    @ColumnInfo(name = "wind_kph")
+    @ColumnInfo(name = "feelslike_c")
     var feelslike_c: String? = null,
+
+    @ColumnInfo(name = "humidity")
+    var humidity: String? = null
 )
 
 data class WeatherConditionModel (

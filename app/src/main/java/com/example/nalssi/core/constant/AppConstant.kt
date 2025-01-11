@@ -3,7 +3,7 @@ package com.example.nalssi.core.constant
 import com.example.nalssi.core.utils.DefaultConfig
 
 const val DATABASE_NAME = "weather.db"
-const val DATABASE_VERSION = 2
+const val DATABASE_VERSION = 3
 
 var BASE_URL: String = DefaultConfig.baseUrl
 var API_KEY: String = DefaultConfig.apiKey

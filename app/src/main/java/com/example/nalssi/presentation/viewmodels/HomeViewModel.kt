@@ -17,9 +17,7 @@ class HomeViewModel (private val fetchAllWeatherUseCase: FetchAllWeatherUseCase)
         fetchAllWeather()
     }
 
-    private val _listWeather: MutableStateFlow<DataState<List<WeatherItem>>> by lazy {
-        MutableStateFlow(DataState.Loading)
-    }
+    private val _listWeather: MutableStateFlow<DataState<List<WeatherItem>>> = MutableStateFlow(DataState.Loading)
     override val listWeather: StateFlow<DataState<List<WeatherItem>>> get() = _listWeather
 
     override fun fetchAllWeather() {

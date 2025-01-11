@@ -20,12 +20,18 @@ interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWeather(weather: List<WeatherModel>)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateWeather(weather: WeatherModel)
 
-    @Query("SELECT * FROM weather WHERE custom_id = :customId")
-    fun getWeatherByCustomId(customId: String): WeatherModel
+    @Query("UPDATE weather SET is_favorite = :isFavorite WHERE q = :q")
+    suspend fun updateWeatherFavorite(q: String, isFavorite: Boolean)
+
+    @Query("SELECT * FROM weather WHERE q = :q")
+    fun getWeatherByQ(q: String): Flow<WeatherModel>
 
     @Query("SELECT currentlast_updated FROM weather ORDER BY currentlast_updated DESC LIMIT 1")
     fun getLastUpdatedDate(): String?
+
+    @Query("SELECT currentlast_updated FROM weather WHERE q = :q ORDER BY currentlast_updated DESC LIMIT 1")
+    fun getLastUpdatedDateByQ(q: String): String?
 }

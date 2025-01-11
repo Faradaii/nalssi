@@ -6,5 +6,6 @@ data class WeatherLocation (
     var country: String? = null,
     var lat: String? = null,
     var lon: String? = null,
-    var localTime: String? = null
+    var localTime: String? = null,
+    var timezone: String? = null,
 )

@@ -11,7 +11,7 @@ fun NavGraphBuilder.homeNavigation(navController: NavController) {
     composable(route = "home") {
         val homeScreenCallback = object: HomeScreenCallback {
             override fun onItemClicked(weatherItem: WeatherItem) {
-                navController.navigate("detail/${weatherItem.custom_id}")
+                navController.navigate("detail/${weatherItem.q}")
             }
 
             override fun onFavoriteClicked() {

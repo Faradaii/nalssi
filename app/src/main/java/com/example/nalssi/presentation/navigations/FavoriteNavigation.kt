@@ -11,7 +11,7 @@ fun NavGraphBuilder.favoriteNavigation(navController: NavController) {
     composable(route = "home") {
         val homeScreenCallback = object: HomeScreenCallback {
             override fun onItemClicked(weatherItem: WeatherItem) {
-                navController.navigate("detail/${weatherItem.custom_id}")
+                navController.navigate("detail/${weatherItem.q}")
             }
 
             override fun onFavoriteClicked() {
@@ -21,11 +21,6 @@ fun NavGraphBuilder.favoriteNavigation(navController: NavController) {
             override fun onProfileClicked() {
                 navController.navigate("profile")
             }
-
-            override fun onSettingsClicked() {
-                navController.navigate("settings")
-            }
-
         }
         HomeScreen(homeScreenCallback = homeScreenCallback)
     }
