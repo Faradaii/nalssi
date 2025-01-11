@@ -1,5 +1,6 @@
 package com.example.nalssi.data.repositories
 
+import android.provider.ContactsContract.Data
 import android.util.Log
 import com.example.nalssi.core.utils.DateUtil
 import com.example.nalssi.core.utils.WeatherHelper
@@ -13,6 +14,7 @@ import com.example.nalssi.data.datasources.remote.response.detailWeatherResponse
 import com.example.nalssi.domain.entities.weather.WeatherItem
 import com.example.nalssi.domain.repositories.IWeatherRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import java.util.Date
 
@@ -36,9 +38,19 @@ class WeatherRepository(
                 return remoteDataSource.fetchAllWeather()
             }
 
+            override fun onFetchFailed() {
+                Log.d("FAILED FETCH", "Fail Fetching")
+            }
+
             override suspend fun saveCallResult(data: ListWeatherResponse) {
                 val weatherList = WeatherHelper.mapResponsesToEntities(data)
-                localDataSource.insertAllWeather(weatherList)
+                val localWeatherList = localDataSource.fetchAllWeather()
+                    .firstOrNull()
+                val mergedWeatherList = weatherList.map { newUpdateItem ->
+                    val localWeather = localWeatherList?.find { it.location?.name == newUpdateItem.location?.name }
+                    newUpdateItem.copy(isFavorite = localWeather?.isFavorite ?: false)
+                }
+                localDataSource.insertAllWeather(mergedWeatherList)
             }
 
             override fun shouldFetch(data: List<WeatherItem>?, lastUpdatedDate: Date?): Boolean {
@@ -70,9 +82,16 @@ class WeatherRepository(
                 return remoteDataSource.fetchDetailWeather(q)
             }
 
+            override fun onFetchFailed() {
+                Log.d("FAILED FETCH", "Fail Fetching")
+            }
+
             override suspend fun saveCallResult(data: WeatherResponse) {
                 val weather = WeatherHelper.mapResponseToEntity(data)
-                localDataSource.updateWeather(weather)
+                val localWeather = localDataSource.fetchDetailWeather(q)
+                    .firstOrNull()
+                val updatedWeather = weather.copy(isFavorite = localWeather?.isFavorite ?: false)
+                localDataSource.updateWeather(updatedWeather)
             }
 
             override fun shouldFetch(data: WeatherItem?, lastUpdatedDate: Date?): Boolean {
@@ -99,7 +118,7 @@ class WeatherRepository(
 
     override suspend fun toggleFavoriteWeather(weather: WeatherItem) {
         val isFavorite = !weather.isFavorite
-        val q = weather.q ?: ""
+        val q = "${ weather.location?.name }-${ weather.location?.region }"
         Log.d("Q", q)
         localDataSource.updateWeatherFavorite(q, isFavorite)
     }

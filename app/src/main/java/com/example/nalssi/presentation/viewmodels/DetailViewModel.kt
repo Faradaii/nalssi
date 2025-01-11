@@ -30,7 +30,7 @@ class DetailViewModel(
                     }
                 }
             } catch (e: Exception) {
-                _detailWeather.value = DataState.Error("Unexpected error occurred.")
+                _detailWeather.value = DataState.Error("Unexpected error occurred. $e")
             }
         }
     }

@@ -23,7 +23,6 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.nalssi.domain.entities.weather.WeatherItem
-import com.example.nalssi.presentation.screens.MyChip
 import com.example.ui.theme.AppTypography
 
 @Composable

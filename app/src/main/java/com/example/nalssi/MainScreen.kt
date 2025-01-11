@@ -22,7 +22,7 @@ fun MainScreen(
     Scaffold(
         modifier = modifier,
     ) { _ ->
-        AppNavigation(navController = navController, modifier = modifier)
+        AppNavigation(navController = navController)
     }
 
 }

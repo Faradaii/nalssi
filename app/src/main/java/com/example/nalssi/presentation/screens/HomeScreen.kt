@@ -96,19 +96,21 @@ fun HomeScreen(
                 HomeModalBottomSheet(isOpenState = isOpenBottomSheet, homeScreenCallback = homeScreenCallback)
             }
 
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 OutlinedTextField(
                     value = query.value,
-                    onValueChange = { newQuery -> query.value = newQuery},
+                    onValueChange = { newQuery -> query.value = newQuery; if(newQuery.isBlank()) viewModel.fetchAllWeather()},
                     singleLine = true,
                     label = { Text("Search Weather") },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                     keyboardActions = KeyboardActions(onSearch = {viewModel.searchWeather(query.value)}),
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp).clip(
+                        RoundedCornerShape(16.dp)
+                    ),
                 )
 
                 when (data) {
@@ -178,7 +180,7 @@ fun HomeTopBar(onClick: () -> Unit) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_menu),
                 contentDescription = "Menu",
-                modifier = Modifier.clickable { onClick() }
+                modifier = Modifier.clickable { onClick() }.padding(8.dp)
             )
         }
     )

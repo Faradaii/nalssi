@@ -8,18 +8,18 @@ import com.example.nalssi.presentation.callback.HomeScreenCallback
 import com.example.nalssi.presentation.screens.HomeScreen
 
 fun NavGraphBuilder.homeNavigation(navController: NavController) {
-    composable(route = "home") {
+    composable(route = Screen.Home.route) {
         val homeScreenCallback = object: HomeScreenCallback {
             override fun onItemClicked(weatherItem: WeatherItem) {
-                navController.navigate("detail/${weatherItem.q}")
+                navController.navigate(Screen.DetailWeather.createRoute("${ weatherItem.location?.name }-${ weatherItem.location?.region }"))
             }
 
             override fun onFavoriteClicked() {
-                navController.navigate("favorite")
+                navController.navigate(Screen.Favorite.route)
             }
 
             override fun onProfileClicked() {
-                navController.navigate("profile")
+                navController.navigate(Screen.Profile.route)
             }
         }
         HomeScreen(homeScreenCallback = homeScreenCallback)

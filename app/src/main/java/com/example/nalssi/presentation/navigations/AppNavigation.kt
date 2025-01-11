@@ -6,16 +6,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 
 @Composable
-fun AppNavigation(navController: NavHostController, modifier: Modifier) {
+fun AppNavigation(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route,
-        modifier = modifier
+        startDestination = Screen.Splash.route,
     ) {
         homeNavigation(navController = navController)
         detailNavigation(navController = navController)
         profileNavigation(navController = navController)
         favoriteNavigation(navController = navController)
+        splashNavigation(navController = navController)
     }
-
 }

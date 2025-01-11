@@ -17,7 +17,7 @@ interface WeatherDao {
     @Query("SELECT * FROM weather WHERE is_favorite = 1")
     fun getAllFavoriteWeather(): Flow<List<WeatherModel>>
 
-    @Query("SELECT * FROM weather WHERE q LIKE '%' || :q || '%'")
+    @Query("SELECT * FROM weather WHERE uniqKey LIKE '%' || :q || '%'")
     fun searchWeather(q: String): Flow<List<WeatherModel>>
 
     @Delete
@@ -29,15 +29,15 @@ interface WeatherDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateWeather(weather: WeatherModel)
 
-    @Query("UPDATE weather SET is_favorite = :isFavorite WHERE q = :q")
+    @Query("UPDATE weather SET is_favorite = :isFavorite WHERE uniqKey = :q")
     suspend fun updateWeatherFavorite(q: String, isFavorite: Boolean)
 
-    @Query("SELECT * FROM weather WHERE q = :q")
+    @Query("SELECT * FROM weather WHERE uniqKey = :q")
     fun getWeatherByQ(q: String): Flow<WeatherModel>
 
     @Query("SELECT currentlast_updated FROM weather ORDER BY currentlast_updated DESC LIMIT 1")
     fun getLastUpdatedDate(): String?
 
-    @Query("SELECT currentlast_updated FROM weather WHERE q = :q ORDER BY currentlast_updated DESC LIMIT 1")
+    @Query("SELECT currentlast_updated FROM weather WHERE uniqKey = :q ORDER BY currentlast_updated DESC LIMIT 1")
     fun getLastUpdatedDateByQ(q: String): String?
 }

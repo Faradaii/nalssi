@@ -7,7 +7,7 @@ import com.example.nalssi.presentation.callback.ProfileScreenCallback
 import com.example.nalssi.presentation.screens.ProfileScreen
 
 fun NavGraphBuilder.profileNavigation(navController: NavController) {
-    composable(route = "profile") {
+    composable(route = Screen.Profile.route) {
         val profileScreenCallback = object: ProfileScreenCallback {
             override fun onBackClicked() {
                 navController.popBackStack()

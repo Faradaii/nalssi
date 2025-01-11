@@ -103,7 +103,9 @@ fun DetailScreen(
 fun ContentDetail(weather: WeatherItem) {
     val items = listOf(
         Triple(R.drawable.ic_speed,"Wind Speed", "${weather.current?.wind_mph} mph"),
-        Triple(R.drawable.ic_winddir,"Wind Direction", "${weather.current?.wind_dir}"),
+        Triple(R.drawable.ic_winddir,"Wind Direction",
+            WeatherHelper.getReadableDirection(weather.current?.wind_dir.toString())
+        ),
         Triple(R.drawable.ic_pressure,"Pressure", "${weather.current?.pressure_mb} mbar"),
         Triple(R.drawable.ic_precipitation,"Precipitation", "${weather.current?.precip_mm}%"),
         Triple(R.drawable.ic_humidity,"Humidity", "${weather.current?.humidity}%"),
@@ -160,7 +162,7 @@ fun ContentDetail(weather: WeatherItem) {
 @Composable
 fun DetailTopBar(title: String, onClick: () -> Unit, onRefresh: () -> Unit) {
     CenterAlignedTopAppBar(
-        title = { Text(title, style = AppTypography.titleLarge) },
+        title = { Text(title.substringBefore("-"), style = AppTypography.titleLarge) },
         navigationIcon = {
             IconButton(onClick = onClick) {
                 Icon(

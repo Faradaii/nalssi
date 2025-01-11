@@ -10,10 +10,10 @@ import com.example.nalssi.presentation.screens.FavoriteScreen
 import com.example.nalssi.presentation.screens.HomeScreen
 
 fun NavGraphBuilder.favoriteNavigation(navController: NavController) {
-    composable(route = "favorite") {
+    composable(route = Screen.Favorite.route) {
         val favoriteScreenCallback = object: FavoriteScreenCallback {
             override fun onItemClicked(weatherItem: WeatherItem) {
-                navController.navigate("detail/${weatherItem.q}")
+                navController.navigate(Screen.DetailWeather.createRoute("${ weatherItem.location?.name }-${ weatherItem.location?.region }"))
             }
 
             override fun onBackClicked() {

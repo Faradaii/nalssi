@@ -38,8 +38,6 @@ object WeatherHelper {
 
     fun mapEntityToDomain(input: WeatherModel): WeatherItem =
         WeatherItem(
-            custom_id = input.custom_id,
-            q = input.q,
             location = input.location?.let {
                 WeatherLocation(
                     name = it.name,
@@ -78,8 +76,7 @@ object WeatherHelper {
 
     fun mapDomainToEntity(input: WeatherItem): WeatherModel =
         WeatherModel(
-            custom_id = input.custom_id,
-            q = input.q,
+            uniqKey = "${ input.location?.name }-${ input.location?.region }",
             location = input.location?.let {
                 WeatherLocationModel(
                     name = it.name,
@@ -118,6 +115,7 @@ object WeatherHelper {
 
     fun mapResponseToEntity(input: WeatherResponse): WeatherModel =
         WeatherModel(
+            uniqKey = "${ input.location?.name }-${ input.location?.region }",
             location = input.location?.let {
                 WeatherLocationModel(
                     name = it.name,
@@ -160,8 +158,7 @@ object WeatherHelper {
         input.bulk?.map { response ->
             response?.queryResponse?.let { itemIndex ->
                 val weatherModel = WeatherModel(
-                    custom_id = itemIndex.customId,
-                    q = itemIndex.q,
+                    uniqKey = "${ itemIndex.location?.name }-${ itemIndex.location?.region }",
                     location = itemIndex.location?.let {
                         WeatherLocationModel(
                             name = it.name,

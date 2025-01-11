@@ -7,7 +7,7 @@ import com.example.nalssi.presentation.callback.DetailScreenCallback
 import com.example.nalssi.presentation.screens.DetailScreen
 
 fun NavGraphBuilder.detailNavigation(navController: NavController) {
-    composable(route = "detail/{q}") {
+    composable(route = Screen.DetailWeather.route) {
         val detailScreenCallback = object: DetailScreenCallback {
             override fun onBackClicked() {
                 navController.popBackStack()
