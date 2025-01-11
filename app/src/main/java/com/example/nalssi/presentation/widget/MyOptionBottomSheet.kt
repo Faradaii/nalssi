@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.example.ui.theme.AppTypography
+import com.example.nalssi.core.theme.AppTypography
 
 @Composable
 fun MyOptionBottomSheet(idIcon: Int ,text: String, contentDescription: String, onClick: () -> Unit) {

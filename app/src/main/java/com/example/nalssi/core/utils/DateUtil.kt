@@ -18,11 +18,6 @@ object DateUtil {
         }
     }
 
-    fun dateToString(date: Date, pattern: String = DEFAULT_PATTERN): String {
-        val formatter = SimpleDateFormat(pattern, Locale.getDefault())
-        return formatter.format(date)
-    }
-
     fun getDiffInDays(startDate: Date, endDate: Date): Int {
         return ((startDate.time - endDate.time) / (1000 * 60 * 60 * 24)).toInt()
     }

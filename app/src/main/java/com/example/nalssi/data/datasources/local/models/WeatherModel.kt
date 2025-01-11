@@ -48,22 +48,22 @@ data class WeatherCurrentModel (
     var lastUpdated: String? = null,
 
     @ColumnInfo(name = "temp_c")
-    var temp_c: String? = null,
+    var tempC: String? = null,
 
     @ColumnInfo(name = "temp_f")
-    var temp_f: String? = null,
+    var tempF: String? = null,
 
     @ColumnInfo(name = "wind_mph")
-    var wind_mph: String? = null,
+    var windMph: String? = null,
 
     @ColumnInfo(name = "wind_dir")
-    var wind_dir: String? = null,
+    var windDir: String? = null,
 
     @ColumnInfo(name = "pressure_mb")
-    var pressure_mb: String? = null,
+    var pressureMb: String? = null,
 
-    @ColumnInfo(name = "precip_mm")
-    var precip_mm: String? = null,
+    @ColumnInfo(name = "precipitation_mm")
+    var precipitationMm: String? = null,
 
     @ColumnInfo(name = "cloud")
     var cloud: String? = null,
@@ -74,8 +74,8 @@ data class WeatherCurrentModel (
     @ColumnInfo(name = "condition")
     var condition: WeatherConditionModel? = null,
 
-    @ColumnInfo(name = "feelslike_c")
-    var feelslike_c: String? = null,
+    @ColumnInfo(name = "feels_like_c")
+    var feelsLikeC: String? = null,
 
     @ColumnInfo(name = "humidity")
     var humidity: String? = null

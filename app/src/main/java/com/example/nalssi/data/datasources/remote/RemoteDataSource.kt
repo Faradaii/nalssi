@@ -3,8 +3,8 @@ package com.example.nalssi.data.datasources.remote
 import android.content.Context
 import android.util.Log
 import com.example.nalssi.core.constant.API_KEY
-import com.example.nalssi.data.datasources.remote.network.ApiService
 import com.example.nalssi.data.datasources.remote.network.ApiResponse
+import com.example.nalssi.data.datasources.remote.network.ApiService
 import com.example.nalssi.data.datasources.remote.response.allWeatherResponse.ListWeatherResponse
 import com.example.nalssi.data.datasources.remote.response.detailWeatherResponse.WeatherResponse
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.File
 
 class RemoteDataSource (private val apiService: ApiService, private val context: Context) {
     private val apiKey = API_KEY

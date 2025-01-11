@@ -1,22 +1,12 @@
 package com.example.nalssi.presentation.screens
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -28,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,7 +33,7 @@ import com.example.nalssi.domain.entities.weather.WeatherItem
 import com.example.nalssi.presentation.callback.DetailScreenCallback
 import com.example.nalssi.presentation.viewmodels.DetailViewModel
 import com.example.nalssi.presentation.widget.MyInfoCard
-import com.example.ui.theme.AppTypography
+import com.example.nalssi.core.theme.AppTypography
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -102,12 +91,12 @@ fun DetailScreen(
 @Composable
 fun ContentDetail(weather: WeatherItem) {
     val items = listOf(
-        Triple(R.drawable.ic_speed,"Wind Speed", "${weather.current?.wind_mph} mph"),
+        Triple(R.drawable.ic_speed,"Wind Speed", "${weather.current?.windMph} mph"),
         Triple(R.drawable.ic_winddir,"Wind Direction",
-            WeatherHelper.getReadableDirection(weather.current?.wind_dir.toString())
+            WeatherHelper.getReadableDirection(weather.current?.windDir.toString())
         ),
-        Triple(R.drawable.ic_pressure,"Pressure", "${weather.current?.pressure_mb} mbar"),
-        Triple(R.drawable.ic_precipitation,"Precipitation", "${weather.current?.precip_mm}%"),
+        Triple(R.drawable.ic_pressure,"Pressure", "${weather.current?.pressureMb} mbar"),
+        Triple(R.drawable.ic_precipitation,"Precipitation", "${weather.current?.precipitationMm}%"),
         Triple(R.drawable.ic_humidity,"Humidity", "${weather.current?.humidity}%"),
         Triple(R.drawable.ic_cloud,"Cloud", "${weather.current?.cloud}%"),
         Triple(R.drawable.ic_uv, "UV", "${weather.current?.uv}"),
@@ -132,7 +121,7 @@ fun ContentDetail(weather: WeatherItem) {
         }
         item (span = { GridItemSpan(2) }) {
             Text(
-                text = "${weather.current?.temp_c.toString()}°",
+                text = "${weather.current?.tempC.toString()}°",
                 style = AppTypography.displayLarge.copy(fontWeight = FontWeight.Bold, textAlign = TextAlign.Center),
             )
         }

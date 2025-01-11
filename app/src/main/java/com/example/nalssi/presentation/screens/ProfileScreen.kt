@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.nalssi.R
 import com.example.nalssi.presentation.callback.ProfileScreenCallback
-import com.example.ui.theme.AppTypography
+import com.example.nalssi.core.theme.AppTypography
 
 @Composable
 fun ProfileScreen(
@@ -35,7 +35,7 @@ fun ProfileScreen(
         Box(
             modifier = modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
             Column(

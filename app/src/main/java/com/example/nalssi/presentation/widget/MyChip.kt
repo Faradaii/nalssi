@@ -10,9 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.compose.onPrimaryContainerDark
-import com.example.compose.onPrimaryContainerLight
-import com.example.ui.theme.AppTypography
+import com.example.nalssi.core.theme.AppTypography
 
 @Composable
 fun MyChip(text: String, modifier: androidx.compose.ui.Modifier = androidx.compose.ui.Modifier) {

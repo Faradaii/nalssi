@@ -23,7 +23,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.nalssi.domain.entities.weather.WeatherItem
-import com.example.ui.theme.AppTypography
+import com.example.nalssi.core.theme.AppTypography
 
 @Composable
 fun MyWeatherCard(
@@ -59,7 +59,7 @@ fun MyWeatherCard(
                         .padding(top = 16.dp)
                 )
                 Text(
-                    text = "${weatherItem.current?.temp_c.toString()}°",
+                    text = "${weatherItem.current?.tempC.toString()}°",
                     style = AppTypography.headlineLarge.copy(fontWeight = FontWeight.Bold)
                 )
                 MyChip(text = weatherItem.current?.condition?.text.toString())

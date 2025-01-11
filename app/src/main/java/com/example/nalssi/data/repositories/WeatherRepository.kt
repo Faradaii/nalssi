@@ -1,6 +1,5 @@
 package com.example.nalssi.data.repositories
 
-import android.provider.ContactsContract.Data
 import android.util.Log
 import com.example.nalssi.core.utils.DateUtil
 import com.example.nalssi.core.utils.WeatherHelper

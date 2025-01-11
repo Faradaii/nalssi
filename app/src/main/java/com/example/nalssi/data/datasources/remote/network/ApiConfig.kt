@@ -1,14 +1,13 @@
 package com.example.nalssi.data.datasources.remote.network
 
-import android.util.Log
 import com.example.nalssi.core.constant.API_KEY
 import com.example.nalssi.core.constant.BASE_URL
-import java.util.concurrent.TimeUnit
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object ApiConfig {
     private val baseUrl: String = BASE_URL

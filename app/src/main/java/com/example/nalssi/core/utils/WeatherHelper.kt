@@ -52,13 +52,13 @@ object WeatherHelper {
             current = input.current?.let {
                 WeatherCurrent(
                     lastUpdated = it.lastUpdated,
-                    temp_c = it.temp_c,
-                    temp_f = it.temp_f,
-                    feelslike_c = it.feelslike_c,
-                    wind_mph = it.wind_mph,
-                    wind_dir = it.wind_dir,
-                    pressure_mb = it.pressure_mb,
-                    precip_mm = it.precip_mm,
+                    tempC = it.tempC,
+                    tempF = it.tempF,
+                    feelsLikeC = it.feelsLikeC,
+                    windMph = it.windMph,
+                    windDir = it.windDir,
+                    pressureMb = it.pressureMb,
+                    precipitationMm = it.precipitationMm,
                     humidity = it.humidity,
                     cloud = it.cloud,
                     uv = it.uv,
@@ -69,45 +69,6 @@ object WeatherHelper {
                             code = condition.code
                         )
                     },
-                )
-            },
-            isFavorite = input.isFavorite
-        )
-
-    fun mapDomainToEntity(input: WeatherItem): WeatherModel =
-        WeatherModel(
-            uniqKey = "${ input.location?.name }-${ input.location?.region }",
-            location = input.location?.let {
-                WeatherLocationModel(
-                    name = it.name,
-                    region = it.region,
-                    country = it.country,
-                    lat = it.lat,
-                    lon = it.lon,
-                    localTime = it.localTime,
-                    timezoneId = it.timezone
-                )
-            },
-            current = input.current?.let {
-                WeatherCurrentModel(
-                    lastUpdated = it.lastUpdated,
-                    temp_c = it.temp_c,
-                    temp_f = it.temp_f,
-                    wind_mph = it.wind_mph,
-                    wind_dir = it.wind_dir,
-                    pressure_mb = it.pressure_mb,
-                    precip_mm = it.precip_mm,
-                    humidity = it.humidity,
-                    cloud = it.cloud,
-                    uv = it.uv,
-                    condition = it.condition?.let { condition ->
-                        WeatherConditionModel(
-                            text = condition.text,
-                            icon = condition.icon,
-                            code = condition.code
-                        )
-                    },
-                    feelslike_c = it.feelslike_c
                 )
             },
             isFavorite = input.isFavorite
@@ -130,12 +91,12 @@ object WeatherHelper {
             current = input.current?.let {
                 WeatherCurrentModel(
                     lastUpdated = it.lastUpdated,
-                    temp_c = it.tempC?.toString(),
-                    temp_f = it.tempF?.toString(),
-                    wind_mph = it.windMph?.toString(),
-                    wind_dir = it.windDir,
-                    pressure_mb = it.pressureMb?.toString(),
-                    precip_mm = it.precipMm?.toString(),
+                    tempC = it.tempC?.toString(),
+                    tempF = it.tempF?.toString(),
+                    windMph = it.windMph?.toString(),
+                    windDir = it.windDir,
+                    pressureMb = it.pressureMb?.toString(),
+                    precipitationMm = it.precipMm?.toString(),
                     humidity = it.humidity?.toString(),
                     cloud = it.cloud?.toString(),
                     uv = it.uv?.toString(),
@@ -146,7 +107,7 @@ object WeatherHelper {
                             code = condition.code?.toString()
                         )
                     },
-                    feelslike_c = it.feelslikeC?.toString()
+                    feelsLikeC = it.feelslikeC?.toString()
                 )
             },
             isFavorite = false
@@ -173,12 +134,12 @@ object WeatherHelper {
                     current = itemIndex.current?.let {
                         WeatherCurrentModel(
                             lastUpdated = it.lastUpdated,
-                            temp_c = it.tempC?.toString(),
-                            temp_f = it.tempF?.toString(),
-                            wind_mph = it.windMph?.toString(),
-                            wind_dir = it.windDir,
-                            pressure_mb = it.pressureMb?.toString(),
-                            precip_mm = it.precipMm?.toString(),
+                            tempC = it.tempC?.toString(),
+                            tempF = it.tempF?.toString(),
+                            windMph = it.windMph?.toString(),
+                            windDir = it.windDir,
+                            pressureMb = it.pressureMb?.toString(),
+                            precipitationMm = it.precipMm?.toString(),
                             humidity = it.humidity?.toString(),
                             cloud = it.cloud?.toString(),
                             uv = it.uv?.toString(),
@@ -189,7 +150,7 @@ object WeatherHelper {
                                     code = condition.code?.toString()
                                 )
                             },
-                            feelslike_c = it.feelslikeC?.toString()
+                            feelsLikeC = it.feelslikeC?.toString()
                         )
                     },
                     isFavorite = false

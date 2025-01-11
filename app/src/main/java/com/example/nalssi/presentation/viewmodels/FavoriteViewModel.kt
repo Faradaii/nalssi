@@ -3,7 +3,6 @@ package com.example.nalssi.presentation.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nalssi.data.DataState
 import com.example.nalssi.domain.entities.weather.WeatherItem
 import com.example.nalssi.domain.usecases.weather.GetAllFavoriteWeatherUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
