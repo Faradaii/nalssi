@@ -1,5 +1,6 @@
 package com.example.nalssi.presentation.screens
 
+import android.inputmethodservice.Keyboard
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,15 +17,21 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -38,6 +45,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -50,9 +59,13 @@ import com.example.nalssi.data.DataState
 import com.example.nalssi.domain.entities.weather.WeatherItem
 import com.example.nalssi.presentation.callback.HomeScreenCallback
 import com.example.nalssi.presentation.viewmodels.HomeViewModel
+import com.example.nalssi.presentation.widget.MyCenter
+import com.example.nalssi.presentation.widget.MyOptionBottomSheet
+import com.example.nalssi.presentation.widget.MyWeatherCard
 import com.example.ui.theme.AppTypography
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -62,44 +75,59 @@ fun HomeScreen(
     val data = viewModel.listWeather.collectAsState().value
 
     val isOpenBottomSheet = remember { mutableStateOf(false) }
+    val query = remember { mutableStateOf("") }
+    val refreshState = rememberPullToRefreshState()
+
+    val forceRefresh = {
+        viewModel.fetchAllWeather(forceFetch = true)
+    }
 
     Scaffold (
         topBar = { HomeTopBar(onClick = { isOpenBottomSheet.value = true }) },
     ) { innerPadding ->
-        Box(
+        PullToRefreshBox(
             modifier = modifier.padding(innerPadding).fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
+            isRefreshing = data is DataState.Loading,
+            onRefresh = forceRefresh,
+            state = refreshState,
         ) {
             if (isOpenBottomSheet.value) {
-                MyModalBottomSheet(isOpenState = isOpenBottomSheet, homeScreenCallback = homeScreenCallback)
+                HomeModalBottomSheet(isOpenState = isOpenBottomSheet, homeScreenCallback = homeScreenCallback)
             }
 
+
             Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxSize()
             ) {
+                OutlinedTextField(
+                    value = query.value,
+                    onValueChange = { newQuery -> query.value = newQuery},
+                    singleLine = true,
+                    label = { Text("Search Weather") },
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    keyboardActions = KeyboardActions(onSearch = {viewModel.searchWeather(query.value)}),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                )
+
                 when (data) {
-                    is DataState.Error -> Text(data.toString())
-                    is DataState.Loading -> Text(data.toString())
+                    is DataState.Error -> MyCenter { Text(data.toString()) }
+                    is DataState.Loading -> MyCenter { Text(data.toString()) }
                     is DataState.Success, is DataState.Cached -> {
                         val data = when (data) {
                             is DataState.Success -> data.data
                             is DataState.Cached -> data.data
                             else -> emptyList()
                         }
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(2),
-                            modifier = Modifier.padding(horizontal = 8.dp)
-                        ) {
-                            if (data.isEmpty()) {
-                                item {
-                                    Column {
-                                        Text("Empty")
-                                    }
-                                }
-                            } else {
+                        if (data.isEmpty()) {
+                            MyCenter { Text("Empty") }
+                        }
+                        else {
+                            LazyVerticalGrid(
+                                columns = GridCells.Fixed(2),
+                                modifier = Modifier.padding(horizontal = 8.dp)
+                            ) {
                                 items(data.size) { index ->
                                     MyWeatherCard(
                                         weatherItem = data[index],
@@ -115,73 +143,9 @@ fun HomeScreen(
     }
 }
 
-@Composable
-fun MyWeatherCard(
-    weatherItem: WeatherItem,
-    onClick: () -> Unit
-) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        modifier = Modifier
-            .width(120.dp)
-            .height(240.dp)
-            .padding(8.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .clickable { onClick() }
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.TopCenter
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(weatherItem.current?.condition?.icon?.replaceFirst("^//".toRegex(), "https://"))
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "Weather Icon",
-                    modifier = Modifier
-                        .size(120.dp)
-                        .padding(top = 16.dp)
-                )
-                Text(
-                    text = "${weatherItem.current?.temp_c.toString()}°",
-                    style = AppTypography.headlineLarge.copy(fontWeight = FontWeight.Bold)
-                )
-                MyChip(text = weatherItem.current?.condition?.text.toString())
-                Text(
-                    text = weatherItem.location?.name.toString(),
-                    style = AppTypography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun MyChip(text: String, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(color = onPrimaryContainerLight)
-            .padding(vertical = 4.dp, horizontal = 8.dp),
-
-    ) {
-        Text(
-            text = text,
-            style = AppTypography.bodySmall.copy(color = onPrimaryContainerDark),
-        )
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyModalBottomSheet(isOpenState: MutableState<Boolean>, homeScreenCallback: HomeScreenCallback) {
+fun HomeModalBottomSheet(isOpenState: MutableState<Boolean>, homeScreenCallback: HomeScreenCallback) {
     ModalBottomSheet(
         onDismissRequest = { isOpenState.value = false },
         dragHandle = {},
@@ -194,31 +158,6 @@ fun MyModalBottomSheet(isOpenState: MutableState<Boolean>, homeScreenCallback: H
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
             MyOptionBottomSheet(idIcon = R.drawable.ic_menu ,text = "Favorite", contentDescription = "favorite_page", onClick = { isOpenState.value = false; homeScreenCallback.onFavoriteClicked() })
         }
-    }
-}
-
-@Composable
-fun MyOptionBottomSheet(idIcon: Int ,text: String, contentDescription: String, onClick: () -> Unit) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 16.dp)
-    ) {
-        Icon(
-            painter = painterResource(id = idIcon),
-            contentDescription = text,
-        )
-        Text(
-            text = text,
-            style = AppTypography.titleMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .semantics { this.contentDescription = contentDescription },
-        )
     }
 }
 

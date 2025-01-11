@@ -4,9 +4,8 @@ import com.example.nalssi.data.DataState
 import com.example.nalssi.domain.entities.weather.WeatherItem
 import kotlinx.coroutines.flow.StateFlow
 
-interface IHomeViewModel {
-    val listWeather: StateFlow<DataState<List<WeatherItem>>>
+interface IFavoriteViewModel {
+    val listWeather: StateFlow<List<WeatherItem>>
 
-    fun fetchAllWeather(forceFetch: Boolean = false)
-    fun searchWeather(q: String)
+    fun fetchFavoriteWeather()
 }

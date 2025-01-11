@@ -9,6 +9,6 @@ interface IWeatherRepository {
     suspend fun fetchAllWeather(forceFetch: Boolean = false): Flow<DataState<List<WeatherItem>>>
     suspend fun fetchDetailWeather(q: String, forceFetch: Boolean = false): Flow<DataState<WeatherItem>>
     suspend fun toggleFavoriteWeather(weatherItem: WeatherItem)
-    fun searchWeather(query: String)
-    fun getAllFavoriteWeather()
+    suspend fun searchWeather(query: String): Flow<List<WeatherItem>>
+    suspend fun getAllFavoriteWeather(): Flow<List<WeatherItem>>
 }

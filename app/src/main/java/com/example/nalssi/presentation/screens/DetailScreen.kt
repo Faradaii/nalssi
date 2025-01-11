@@ -43,6 +43,7 @@ import com.example.nalssi.data.DataState
 import com.example.nalssi.domain.entities.weather.WeatherItem
 import com.example.nalssi.presentation.callback.DetailScreenCallback
 import com.example.nalssi.presentation.viewmodels.DetailViewModel
+import com.example.nalssi.presentation.widget.MyInfoCard
 import com.example.ui.theme.AppTypography
 import org.koin.androidx.compose.koinViewModel
 
@@ -103,7 +104,7 @@ fun ContentDetail(weather: WeatherItem) {
     val items = listOf(
         Triple(R.drawable.ic_speed,"Wind Speed", "${weather.current?.wind_mph} mph"),
         Triple(R.drawable.ic_winddir,"Wind Direction", "${weather.current?.wind_dir}"),
-        Triple(R.drawable.ic_pressure,"Pressure", "${weather.current?.pressure_mb}%"),
+        Triple(R.drawable.ic_pressure,"Pressure", "${weather.current?.pressure_mb} mbar"),
         Triple(R.drawable.ic_precipitation,"Precipitation", "${weather.current?.precip_mm}%"),
         Triple(R.drawable.ic_humidity,"Humidity", "${weather.current?.humidity}%"),
         Triple(R.drawable.ic_cloud,"Cloud", "${weather.current?.cloud}%"),
@@ -151,56 +152,6 @@ fun ContentDetail(weather: WeatherItem) {
                 text = "Last updated at : ${weather.current?.lastUpdated}",
                 style = AppTypography.titleMedium.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Center),
             )
-        }
-    }
-}
-
-@Composable
-fun MyInfoCard(
-    icon: Int,
-    title: String,
-    subtitle: String,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        modifier = modifier
-            .width(240.dp)
-            .height(80.dp)
-            .padding(8.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .clickable {}
-    ) {
-        Row (
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 8.dp, horizontal = 12.dp)
-        ) {
-            Column (
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.weight(1f)
-            ) {
-                Icon(
-                    painter = painterResource(id = icon),
-                    contentDescription = "Card Icon",
-                    modifier = Modifier.fillMaxSize().padding(8.dp)
-                )
-            }
-            Column (
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.weight(2f)
-            ) {
-                Text(
-                    text = title,
-                    style = AppTypography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                )
-                Text(
-                    text = subtitle,
-                    style = AppTypography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                )
-            }
         }
     }
 }

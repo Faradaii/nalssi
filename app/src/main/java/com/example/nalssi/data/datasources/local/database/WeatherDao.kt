@@ -14,6 +14,12 @@ interface WeatherDao {
     @Query("SELECT * FROM weather")
     fun fetchAllWeather(): Flow<List<WeatherModel>>
 
+    @Query("SELECT * FROM weather WHERE is_favorite = 1")
+    fun getAllFavoriteWeather(): Flow<List<WeatherModel>>
+
+    @Query("SELECT * FROM weather WHERE q LIKE '%' || :q || '%'")
+    fun searchWeather(q: String): Flow<List<WeatherModel>>
+
     @Delete
     suspend fun deleteAllWeather(weather: WeatherModel)
 

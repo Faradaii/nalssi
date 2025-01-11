@@ -7,7 +7,6 @@ val UseCaseModule = module {
     single { FetchAllWeatherUseCase(get()) }
     single { FetchDetailWeatherUseCase(get()) }
     single { SearchWeatherUseCase(get()) }
-
     single { ToggleFavoriteWeatherUseCase(get()) }
     single { GetAllFavoriteWeatherUseCase(get()) }
 }

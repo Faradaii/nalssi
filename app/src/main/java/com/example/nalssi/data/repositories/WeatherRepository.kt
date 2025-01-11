@@ -89,12 +89,12 @@ class WeatherRepository(
             }
         }.asFlow()
 
-    override fun searchWeather(query: String) {
-        //TODO("Not yet implemented")
+    override suspend fun searchWeather(query: String): Flow<List<WeatherItem>> {
+        return localDataSource.searchWeather(query).map { WeatherHelper.mapEntitiesToDomain(it) }
     }
 
-    override fun getAllFavoriteWeather() {
-        //TODO("Not yet implemented")
+    override suspend fun getAllFavoriteWeather(): Flow<List<WeatherItem>> {
+        return localDataSource.getAllFavoriteWeather().map { WeatherHelper.mapEntitiesToDomain(it) }
     }
 
     override suspend fun toggleFavoriteWeather(weather: WeatherItem) {

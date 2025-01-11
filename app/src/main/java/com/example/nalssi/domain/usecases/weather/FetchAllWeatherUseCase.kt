@@ -6,7 +6,7 @@ import com.example.nalssi.domain.repositories.IWeatherRepository
 import kotlinx.coroutines.flow.Flow
 
 class FetchAllWeatherUseCase(private val weatherRepository: IWeatherRepository) {
-    suspend operator fun invoke(): Flow<DataState<List<WeatherItem>>> {
-        return weatherRepository.fetchAllWeather()
+    suspend operator fun invoke(forceFetch: Boolean = false): Flow<DataState<List<WeatherItem>>> {
+        return weatherRepository.fetchAllWeather(forceFetch)
     }
 }

@@ -9,6 +9,8 @@ import kotlinx.coroutines.withContext
 class LocalDataSource (private val weatherDao: WeatherDao) {
     fun fetchAllWeather(): Flow<List<WeatherModel>> = weatherDao.fetchAllWeather()
     fun fetchDetailWeather(q: String): Flow<WeatherModel> = weatherDao.getWeatherByQ(q)
+    fun getAllFavoriteWeather(): Flow<List<WeatherModel>> = weatherDao.getAllFavoriteWeather()
+    fun searchWeather(q: String): Flow<List<WeatherModel>> = weatherDao.searchWeather(q)
     suspend fun insertAllWeather(weatherList: List<WeatherModel>) = weatherDao.insertWeather(weatherList)
     suspend fun updateWeather(weather: WeatherModel) = weatherDao.updateWeather(weather)
     suspend fun updateWeatherFavorite(q: String, isFavorite: Boolean) = weatherDao.updateWeatherFavorite(q, isFavorite)
