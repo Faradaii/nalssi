@@ -13,8 +13,6 @@ fun MainScreen(
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
         modifier = modifier,

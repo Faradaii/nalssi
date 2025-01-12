@@ -28,11 +28,12 @@ import com.example.nalssi.core.theme.AppTypography
 @Composable
 fun MyWeatherCard(
     weatherItem: WeatherItem,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier
+        modifier = modifier
             .width(120.dp)
             .height(240.dp)
             .padding(8.dp)
